@@ -46,7 +46,7 @@ public class PurchaseControllerTest {
 	public void calculateTotalTax(){
 		createProductsToTest();
 		purchaseController.calculateTotalTax();
-		assertEquals(Double.valueOf(2.70), Double.valueOf(purchaseController.getReceipt().getTotalTax()));
+		assertEquals(Double.valueOf(2.70), Double.valueOf(purchaseController.getReceipt().getTotalTaxes()));
 	}
 	
 	@Test
@@ -146,14 +146,14 @@ public class PurchaseControllerTest {
 		assertEquals(Double.valueOf(16.49), Double.valueOf(purchaseController.getReceipt().getProductsList().get(1).getPriceWithTax()));
 		assertEquals(Double.valueOf(0.85), Double.valueOf(purchaseController.getReceipt().getProductsList().get(2).getPriceWithTax()));
 		assertEquals(Double.valueOf(29.83), Double.valueOf(purchaseController.getReceipt().getTotalPrice()));
-		assertEquals(Double.valueOf(1.50), Double.valueOf(purchaseController.getReceipt().getTotalTax()));
+		assertEquals(Double.valueOf(1.50), Double.valueOf(purchaseController.getReceipt().getTotalTaxes()));
 	}
 
 	private void assertionsForInput2() {
 		assertEquals(Double.valueOf(10.50), Double.valueOf(purchaseController.getReceipt().getProductsList().get(0).getPriceWithTax()));
 		assertEquals(Double.valueOf(54.65), Double.valueOf(purchaseController.getReceipt().getProductsList().get(1).getPriceWithTax()));
 		assertEquals(Double.valueOf(65.15), Double.valueOf(purchaseController.getReceipt().getTotalPrice()));
-		assertEquals(Double.valueOf(7.65), Double.valueOf(purchaseController.getReceipt().getTotalTax()));
+		assertEquals(Double.valueOf(7.65), Double.valueOf(purchaseController.getReceipt().getTotalTaxes()));
 	}
 	
 	private void assertionsForInput3() {
@@ -162,7 +162,7 @@ public class PurchaseControllerTest {
 		assertEquals(Double.valueOf(9.75), Double.valueOf(purchaseController.getReceipt().getProductsList().get(2).getPriceWithTax()));
 		assertEquals(Double.valueOf(11.85), Double.valueOf(purchaseController.getReceipt().getProductsList().get(3).getPriceWithTax()));
 		assertEquals(Double.valueOf(74.68), Double.valueOf(purchaseController.getReceipt().getTotalPrice()));
-		assertEquals(Double.valueOf(6.70), Double.valueOf(purchaseController.getReceipt().getTotalTax()));
+		assertEquals(Double.valueOf(6.70), Double.valueOf(purchaseController.getReceipt().getTotalTaxes()));
 	}
 
 	private void printResults() {
@@ -170,7 +170,7 @@ public class PurchaseControllerTest {
 		for(Product p : purchaseController.getReceipt().getProductsList()){
 			System.out.println("- "+p.getQuantity()+" - "+p.getName()+": "+p.getPriceWithTax());
 		}
-		System.out.println("Sales taxes: "+purchaseController.getReceipt().getTotalTax());
+		System.out.println("Sales taxes: "+purchaseController.getReceipt().getTotalTaxes());
 		System.out.println("Total: "+purchaseController.getReceipt().getTotalPrice());
 	}
 	

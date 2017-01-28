@@ -7,12 +7,12 @@ public class Receipt {
 
 	private List<Product> productsList;
 	private double totalPrice;
-	private double totalTax;
+	private double totalTaxes;
 	
 	public Receipt(){
 		productsList = new ArrayList<Product>();
 		totalPrice = 0;
-		totalTax = 0;
+		totalTaxes = 0;
 	}
 	
 	public List<Product> getProductsList() {
@@ -31,12 +31,12 @@ public class Receipt {
 		this.totalPrice = totalPrice;
 	}
 
-	public double getTotalTax() {
-		return totalTax;
+	public double getTotalTaxes() {
+		return totalTaxes;
 	}
 
-	public void setTotalTax(double totalTax) {
-		this.totalTax = totalTax;
+	public void setTotalTaxes(double totalTaxes) {
+		this.totalTaxes = totalTaxes;
 	}
 
 }

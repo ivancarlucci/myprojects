@@ -4,7 +4,7 @@ public class Product {
 
 	private double price;
 	private double salesTax;
-	private double importedTax;
+	private double importTaxes;
 	private String name;
 	private int quantity;
 	private boolean imported;
@@ -30,12 +30,12 @@ public class Product {
 		return price;
 	}
 
-	public double getImportedTax() {
-		return importedTax;
+	public double getImportTaxes() {
+		return importTaxes;
 	}
 
-	private void setImportedTax(double importedTax) {
-		this.importedTax = importedTax;
+	private void setImportedTaxes(double importTaxes) {
+		this.importTaxes = importTaxes;
 	}
 
 	public String getName() {
@@ -59,7 +59,7 @@ public class Product {
 	}
 
 	public void setImported(boolean imported) {
-		this.setImportedTax(imported==true? 0.05: 0);
+		this.setImportedTaxes(imported==true? 0.05: 0);
 		this.imported = imported;
 	}
 

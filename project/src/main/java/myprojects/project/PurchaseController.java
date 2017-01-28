@@ -34,9 +34,9 @@ public class PurchaseController {
 	public void calculateTotalTax() {
 		double totalTax = 0;
 		for(Product p: receipt.getProductsList()){
-			totalTax = totalTax + p.getPrice()*p.getImportedTax() + p.getPrice()*p.getSalesTax();
+			totalTax = totalTax + p.getPrice()*p.getImportTaxes() + p.getPrice()*p.getSalesTax();
 		}
-		receipt.setTotalTax(toRoundNearest005(totalTax));
+		receipt.setTotalTaxes(toRoundNearest005(totalTax));
 	}
 	
 	public Receipt getReceipt() {
@@ -61,9 +61,9 @@ public class PurchaseController {
 	}
 
 	private double calculateImportTaxes(Product p) {
-		double importTaxes = p.getPrice()*p.getImportedTax();
+		double importTaxes = p.getPrice()*p.getImportTaxes();
 		double importTaxesRounded = 0;
-		if(p.getImportedTax()!=0){
+		if(p.getImportTaxes()!=0){
 			importTaxesRounded = toRoundNearest005(importTaxes);
 		}else{
 			importTaxesRounded = importTaxes;
