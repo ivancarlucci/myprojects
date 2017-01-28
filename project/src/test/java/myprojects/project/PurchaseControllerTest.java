@@ -32,32 +32,16 @@ public class PurchaseControllerTest {
 	
 	@Test
 	public void calculateTotalPrice(){
-		Product product1 = new Product();
-		product1.setPrice(11);
-		product1.setQuantity(1);
-		product1.setImported(true);
-		Product product2 = new Product();
-		product2.setPrice(10);
-		product2.setImported(false);
-		product2.setQuantity(1);
-		purchaseController.getReceipt().setProductsList(Arrays.asList(product1,product2));
+		createProductsToTest();
 		purchaseController.calculateTotalPrice();
-		assertEquals(Double.valueOf(23.705), Double.valueOf(purchaseController.getReceipt().getTotalPrice()));//12,705+11
+		assertEquals(Double.valueOf(23.65), Double.valueOf(purchaseController.getReceipt().getTotalPrice()));
 	}
-	
+
 	@Test
 	public void calculateTotalTax(){
-		Product product1 = new Product();
-		product1.setPrice(11);
-		product1.setQuantity(1);
-		product1.setImported(true);
-		Product product2 = new Product();
-		product2.setPrice(10);
-		product2.setImported(false);
-		product2.setQuantity(1);
-		purchaseController.getReceipt().setProductsList(Arrays.asList(product1,product2));
+		createProductsToTest();
 		purchaseController.calculateTotalTax();
-		assertEquals(Double.valueOf(2.65), Double.valueOf(purchaseController.getReceipt().getTotalTax()));
+		assertEquals(Double.valueOf(2.70), Double.valueOf(purchaseController.getReceipt().getTotalTax()));
 	}
 	
 	@Test
@@ -80,18 +64,9 @@ public class PurchaseControllerTest {
 		assertEquals(3,purchaseController.getReceipt().getProductsList().size());
 		purchaseController.calculateTotalPrice();
 		purchaseController.calculateTotalTax();
-		assertEquals(Double.valueOf(12.49), Double.valueOf(purchaseController.getReceipt().getProductsList().get(0).getPrice()));
-		assertEquals(Double.valueOf(14.99), Double.valueOf(purchaseController.getReceipt().getProductsList().get(1).getPrice()));
-		assertEquals(Double.valueOf(0.85), Double.valueOf(purchaseController.getReceipt().getProductsList().get(2).getPrice()));
-		assertEquals(Double.valueOf(29.84), Double.valueOf(purchaseController.getReceipt().getTotalPrice()));
-		assertEquals(Double.valueOf(1.50), Double.valueOf(purchaseController.getReceipt().getTotalTax()));
+		assertionsForInput1();
 		
-		System.out.println("Product list purchased:");
-		for(Product p : purchaseController.getReceipt().getProductsList()){
-			System.out.println("- "+p.getQuantity()+" - "+p.getName());
-		}
-		System.out.println("Total price: "+purchaseController.getReceipt().getTotalPrice());
-		System.out.println("Total tax: "+purchaseController.getReceipt().getTotalTax());
+		printResults();
 	}
 	
 	@Test
@@ -110,15 +85,9 @@ public class PurchaseControllerTest {
 		purchaseController.purchaseProduct(bottlePerfume);
 		purchaseController.calculateTotalPrice();
 		purchaseController.calculateTotalTax();
-		assertEquals(Double.valueOf(65.15), Double.valueOf(purchaseController.getReceipt().getTotalPrice()));
-		assertEquals(Double.valueOf(7.65), Double.valueOf(purchaseController.getReceipt().getTotalTax()));
+		assertionsForInput2();
 		
-		System.out.println("Product list purchased:");
-		for(Product p : purchaseController.getReceipt().getProductsList()){
-			System.out.println("- "+p.getQuantity()+" - "+p.getName());
-		}
-		System.out.println("Total price: "+purchaseController.getReceipt().getTotalPrice());
-		System.out.println("Total tax: "+purchaseController.getReceipt().getTotalTax());
+		printResults();
 	}
 	
 	@Test
@@ -127,7 +96,7 @@ public class PurchaseControllerTest {
 		bottlePerfume.setPrice(27.99);
 		bottlePerfume.setQuantity(1);
 		bottlePerfume.setImported(true);
-		bottlePerfume.setName("Bottle of perfume");
+		bottlePerfume.setName("Imported bottle of perfume");
 		Product bottlePerfume2 = new Product();
 		bottlePerfume2.setPrice(18.99);
 		bottlePerfume2.setQuantity(1);
@@ -137,20 +106,67 @@ public class PurchaseControllerTest {
 		packetOfPills.setPrice(9.75);
 		packetOfPills.setQuantity(1);
 		packetOfPills.setImported(false);
-		packetOfPills.setName("Packet of pills");
+		packetOfPills.setName("Packet of headache pills");
 		Product boxOfChocolates = new Food();
 		boxOfChocolates.setPrice(11.25);
 		boxOfChocolates.setQuantity(1);
 		boxOfChocolates.setImported(true);
-		boxOfChocolates.setName("Box of imported chocolates");
+		boxOfChocolates.setName("Imported box of chocolates");
 		purchaseController.purchaseProduct(bottlePerfume);
 		purchaseController.purchaseProduct(bottlePerfume2);
 		purchaseController.purchaseProduct(packetOfPills);
 		purchaseController.purchaseProduct(boxOfChocolates);
 		purchaseController.calculateTotalPrice();
 		purchaseController.calculateTotalTax();
+		assertionsForInput3();
+		
+		printResults();
+		
+	}
+	
+	private void createProductsToTest() {
+		Product product1 = new Product();
+		product1.setPrice(11);
+		product1.setQuantity(1);
+		product1.setImported(true);
+		Product product2 = new Product();
+		product2.setPrice(10);
+		product2.setImported(false);
+		product2.setQuantity(1);
+		purchaseController.getReceipt().setProductsList(Arrays.asList(product1,product2));
+	}
+	
+	private void assertionsForInput1() {
+		assertEquals(Double.valueOf(12.49), Double.valueOf(purchaseController.getReceipt().getProductsList().get(0).getPriceWithTax()));
+		assertEquals(Double.valueOf(16.49), Double.valueOf(purchaseController.getReceipt().getProductsList().get(1).getPriceWithTax()));
+		assertEquals(Double.valueOf(0.85), Double.valueOf(purchaseController.getReceipt().getProductsList().get(2).getPriceWithTax()));
+		assertEquals(Double.valueOf(29.83), Double.valueOf(purchaseController.getReceipt().getTotalPrice()));
+		assertEquals(Double.valueOf(1.50), Double.valueOf(purchaseController.getReceipt().getTotalTax()));
+	}
+
+	private void assertionsForInput2() {
+		assertEquals(Double.valueOf(10.50), Double.valueOf(purchaseController.getReceipt().getProductsList().get(0).getPriceWithTax()));
+		assertEquals(Double.valueOf(54.65), Double.valueOf(purchaseController.getReceipt().getProductsList().get(1).getPriceWithTax()));
+		assertEquals(Double.valueOf(65.15), Double.valueOf(purchaseController.getReceipt().getTotalPrice()));
+		assertEquals(Double.valueOf(7.65), Double.valueOf(purchaseController.getReceipt().getTotalTax()));
+	}
+	
+	private void assertionsForInput3() {
+		assertEquals(Double.valueOf(32.19), Double.valueOf(purchaseController.getReceipt().getProductsList().get(0).getPriceWithTax()));
+		assertEquals(Double.valueOf(20.89), Double.valueOf(purchaseController.getReceipt().getProductsList().get(1).getPriceWithTax()));
+		assertEquals(Double.valueOf(9.75), Double.valueOf(purchaseController.getReceipt().getProductsList().get(2).getPriceWithTax()));
+		assertEquals(Double.valueOf(11.85), Double.valueOf(purchaseController.getReceipt().getProductsList().get(3).getPriceWithTax()));
 		assertEquals(Double.valueOf(74.68), Double.valueOf(purchaseController.getReceipt().getTotalPrice()));
 		assertEquals(Double.valueOf(6.70), Double.valueOf(purchaseController.getReceipt().getTotalTax()));
+	}
+
+	private void printResults() {
+		System.out.println("Product list purchased:");
+		for(Product p : purchaseController.getReceipt().getProductsList()){
+			System.out.println("- "+p.getQuantity()+" - "+p.getName()+": "+p.getPriceWithTax());
+		}
+		System.out.println("Sales taxes: "+purchaseController.getReceipt().getTotalTax());
+		System.out.println("Total: "+purchaseController.getReceipt().getTotalPrice());
 	}
 	
 }

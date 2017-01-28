@@ -9,6 +9,7 @@ public class Product {
 	private String name;
 	private int quantity;
 	private boolean imported;
+	private double priceWithTax;
 	
 	public Product(){
 		setSalesTax(0.10);
@@ -69,6 +70,14 @@ public class Product {
 	public void setImported(boolean imported) {
 		this.setImportedTax(imported==true? 0.05: 0);
 		this.imported = imported;
+	}
+
+	public double getPriceWithTax() {
+		return priceWithTax;
+	}
+
+	public void setPriceWithTax(double priceWithTax) {
+		this.priceWithTax = priceWithTax;
 	}
 	
 }

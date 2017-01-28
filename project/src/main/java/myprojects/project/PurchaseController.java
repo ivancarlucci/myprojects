@@ -1,5 +1,9 @@
 package myprojects.project;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
+
 public class PurchaseController {
 
 	private Receipt receipt;
@@ -23,17 +27,57 @@ public class PurchaseController {
 	public void calculateTotalPrice() {
 		double totalPrice = 0;
 		for(Product p: receipt.getProductsList()){
-			double priceWithSalesTax = p.getPrice()*p.getQuantity() + p.getPrice()*p.getSalesTax() + p.getPrice()*p.getImportedTax();
-			double priceWithSalesTaxRounded = 0;
-			if(p.getSalesTax()!=0){
-				priceWithSalesTaxRounded = (Math.round(priceWithSalesTax*20.0))/20.0;//TODO bisogna metterlo prima su due cifre e poi approssimare forse(Math.round(priceWithSalesTax*20))/20.0;
-			}else{
-				priceWithSalesTaxRounded = priceWithSalesTax;
-			}
-			totalPrice = totalPrice + priceWithSalesTaxRounded;
+			
+			double salesTaxRounded = calculateSalesTaxes(p);
+			
+			double importTaxesRounded = calculateImportTaxes(p);
+			
+			double totalPriceSingleItem = calculateSingleItemPriceWithTaxes(p, salesTaxRounded, importTaxesRounded);
+			
+			BigDecimal temp1 = toHaveTwoDecimalDigits(totalPriceSingleItem);
+			totalPrice = totalPrice + temp1.doubleValue();
+			
 		}
-		receipt.setTotalPrice(Math.floor(totalPrice*100)/100);
-//		receipt.setTotalPrice(totalPrice);
+		receipt.setTotalPrice(toHaveTwoDecimalDigits(totalPrice).doubleValue());
+	}
+
+	private BigDecimal toHaveTwoDecimalDigits(double totalPriceSingleItem) {
+		BigDecimal temp1 = new BigDecimal(totalPriceSingleItem);
+		temp1 = temp1.round(new MathContext(4, RoundingMode.HALF_UP));
+		return temp1;
+	}
+
+	private double calculateSingleItemPriceWithTaxes(Product p, double salesTaxRounded, double importTaxesRounded) {
+		BigDecimal temp = new BigDecimal(p.getPrice()+importTaxesRounded + salesTaxRounded);
+		p.setPriceWithTax((temp.round(new MathContext(4, RoundingMode.HALF_UP))).doubleValue());
+		double totalPriceSingleItem = (importTaxesRounded + salesTaxRounded) + p.getPrice()*p.getQuantity();
+		return totalPriceSingleItem;
+	}
+
+	private double calculateImportTaxes(Product p) {
+		double importTaxes = p.getPrice()*p.getImportedTax();
+		double importTaxesRounded = 0;
+		if(p.getImportedTax()!=0){
+			importTaxesRounded = toRoundNearest005(importTaxes);
+		}else{
+			importTaxesRounded = importTaxes;
+		}
+		return importTaxesRounded;
+	}
+
+	private double calculateSalesTaxes(Product p) {
+		double salesTaxes = p.getPrice()*p.getSalesTax();
+		double salesTaxesRounded = 0;
+		if(p.getSalesTax()!=0){
+			salesTaxesRounded = toRoundNearest005(salesTaxes);
+		}else{
+			salesTaxesRounded = salesTaxes;
+		}
+		return salesTaxesRounded;
+	}
+
+	private double toRoundNearest005(double salesTaxes) {
+		return Math.ceil(salesTaxes / 0.05) * 0.05;
 	}
 
 	public void calculateTotalTax() {
@@ -41,7 +85,7 @@ public class PurchaseController {
 		for(Product p: receipt.getProductsList()){
 			totalTax = totalTax + p.getPrice()*p.getImportedTax() + p.getPrice()*p.getSalesTax();
 		}
-		receipt.setTotalTax((Math.round(totalTax*20.0))/20.0);
+		receipt.setTotalTax(toRoundNearest005(totalTax));
 	}
 	
 }
