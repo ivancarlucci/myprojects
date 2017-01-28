@@ -2,6 +2,9 @@ package myprojects.project;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -22,8 +25,9 @@ public class ReceiptTest {
 	
 	@Test
 	public void getProductsList(){
-		assertNotNull(receipt.getProductsList());
+		assertEquals(0,receipt.getProductsList().size());
 	}
+	
 	
 	
 
