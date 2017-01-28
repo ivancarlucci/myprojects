@@ -1,12 +1,12 @@
-package myprojects.project;
+package myprojects.project.model;
 
-import static org.junit.Assert.*;
-
-import java.util.ArrayList;
-import java.util.List;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import myprojects.project.model.Receipt;
 
 public class ReceiptTest {
 
@@ -24,11 +24,8 @@ public class ReceiptTest {
 	}
 	
 	@Test
-	public void getProductsList(){
+	public void productListShouldBeEmptyAtTheBeginning(){
 		assertEquals(0,receipt.getProductsList().size());
 	}
-	
-	
-	
 
 }

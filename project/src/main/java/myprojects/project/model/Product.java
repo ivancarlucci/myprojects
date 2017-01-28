@@ -1,9 +1,8 @@
-package myprojects.project;
+package myprojects.project.model;
 
 public class Product {
 
 	private double price;
-	private ProductType type;
 	private double salesTax;
 	private double importedTax;
 	private String name;
@@ -29,14 +28,6 @@ public class Product {
 
 	public double getPrice() {
 		return price;
-	}
-
-	public void setType(ProductType type) {
-		this.type = type;
-	}
-
-	public ProductType getType() {
-		return type;
 	}
 
 	public double getImportedTax() {

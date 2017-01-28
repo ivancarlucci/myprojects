@@ -1,4 +1,4 @@
-package myprojects.project;
+package myprojects.project.model;
 
 public class Medical extends Product{
 	public Medical(){

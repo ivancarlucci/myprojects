@@ -8,6 +8,11 @@ import java.util.Arrays;
 import org.junit.Before;
 import org.junit.Test;
 
+import myprojects.project.model.Book;
+import myprojects.project.model.Food;
+import myprojects.project.model.Medical;
+import myprojects.project.model.Product;
+
 public class PurchaseControllerTest {
 	
 	private PurchaseController purchaseController;
@@ -59,7 +64,7 @@ public class PurchaseControllerTest {
 		Product chocolateBar = new Food();
 		chocolateBar.setPrice(0.85);
 		chocolateBar.setQuantity(1);
-		chocolateBar.setName("Chocolate");
+		chocolateBar.setName("Chocolate bar");
 		purchaseController.purchaseProduct(chocolateBar);
 		assertEquals(3,purchaseController.getReceipt().getProductsList().size());
 		purchaseController.calculateTotalPrice();
@@ -75,12 +80,12 @@ public class PurchaseControllerTest {
 		boxChocolate.setPrice(10);
 		boxChocolate.setQuantity(1);
 		boxChocolate.setImported(true);
-		boxChocolate.setName("Box of chocolates");
+		boxChocolate.setName("Imported box of chocolates");
 		Product bottlePerfume = new Product();
 		bottlePerfume.setPrice(47.5);
 		bottlePerfume.setQuantity(1);
 		bottlePerfume.setImported(true);
-		bottlePerfume.setName("Bottle of perfume");
+		bottlePerfume.setName("Imported bottle of perfume");
 		purchaseController.purchaseProduct(boxChocolate);
 		purchaseController.purchaseProduct(bottlePerfume);
 		purchaseController.calculateTotalPrice();

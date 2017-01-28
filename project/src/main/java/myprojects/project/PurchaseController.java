@@ -4,6 +4,9 @@ import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
 
+import myprojects.project.model.Product;
+import myprojects.project.model.Receipt;
+
 public class PurchaseController {
 
 	private Receipt receipt;
@@ -16,6 +19,26 @@ public class PurchaseController {
 		receipt.getProductsList().add(product);
 	}
 
+	public void calculateTotalPrice() {
+		double totalPrice = 0;
+		for(Product p: receipt.getProductsList()){
+			double salesTaxRounded = calculateSalesTaxes(p);
+			double importTaxesRounded = calculateImportTaxes(p);
+			double totalPriceSingleItem = calculateSingleItemPriceWithTaxes(p, salesTaxRounded, importTaxesRounded);
+			BigDecimal temp1 = toHaveTwoDecimalDigits(totalPriceSingleItem);
+			totalPrice = totalPrice + temp1.doubleValue();
+		}
+		receipt.setTotalPrice(toHaveTwoDecimalDigits(totalPrice).doubleValue());
+	}
+
+	public void calculateTotalTax() {
+		double totalTax = 0;
+		for(Product p: receipt.getProductsList()){
+			totalTax = totalTax + p.getPrice()*p.getImportedTax() + p.getPrice()*p.getSalesTax();
+		}
+		receipt.setTotalTax(toRoundNearest005(totalTax));
+	}
+	
 	public Receipt getReceipt() {
 		return receipt;
 	}
@@ -23,24 +46,7 @@ public class PurchaseController {
 	public void setReceipt(Receipt receipt) {
 		this.receipt = receipt;
 	}
-
-	public void calculateTotalPrice() {
-		double totalPrice = 0;
-		for(Product p: receipt.getProductsList()){
-			
-			double salesTaxRounded = calculateSalesTaxes(p);
-			
-			double importTaxesRounded = calculateImportTaxes(p);
-			
-			double totalPriceSingleItem = calculateSingleItemPriceWithTaxes(p, salesTaxRounded, importTaxesRounded);
-			
-			BigDecimal temp1 = toHaveTwoDecimalDigits(totalPriceSingleItem);
-			totalPrice = totalPrice + temp1.doubleValue();
-			
-		}
-		receipt.setTotalPrice(toHaveTwoDecimalDigits(totalPrice).doubleValue());
-	}
-
+	
 	private BigDecimal toHaveTwoDecimalDigits(double totalPriceSingleItem) {
 		BigDecimal temp1 = new BigDecimal(totalPriceSingleItem);
 		temp1 = temp1.round(new MathContext(4, RoundingMode.HALF_UP));
@@ -80,12 +86,4 @@ public class PurchaseController {
 		return Math.ceil(salesTaxes / 0.05) * 0.05;
 	}
 
-	public void calculateTotalTax() {
-		double totalTax = 0;
-		for(Product p: receipt.getProductsList()){
-			totalTax = totalTax + p.getPrice()*p.getImportedTax() + p.getPrice()*p.getSalesTax();
-		}
-		receipt.setTotalTax(toRoundNearest005(totalTax));
-	}
-	
 }
